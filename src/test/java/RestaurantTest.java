@@ -1,7 +1,11 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
+import java.sql.Array;
+import java.util.List;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -64,4 +68,48 @@ class RestaurantTest {
                 ()->restaurant.removeFromMenu("French fries"));
     }
     //<<<<<<<<<<<<<<<<<<<<<<<MENU>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    @Test
+    public void getOrderTotalReturnTotalPriceForSingleItem() {
+        restaurant = new Restaurant("xyz restaurant","chennai",LocalTime.of(9,0),LocalTime.of(9,5));
+        populateMenuItems(restaurant);
+        List<String> names = new ArrayList<String>();
+                names.add("biryani");
+
+      int orderTotal =  restaurant.getOrderTotal(names);
+      assertEquals(200, orderTotal);
+    }
+
+    @Test
+    public void getOrderTotalReturnTotalPriceForTwoItem() {
+        restaurant = new Restaurant("xyz restaurant","chennai",LocalTime.of(9,0),LocalTime.of(9,5));
+        populateMenuItems(restaurant);
+        List<String> names = new ArrayList<String>();
+        names.add("biryani");
+        names.add("curry");
+
+        int orderTotal =  restaurant.getOrderTotal(names);
+        assertEquals(300, orderTotal);
+    }
+
+    @Test
+    public void getOrderTotalReturnTotalPriceForThreeItem() {
+        restaurant = new Restaurant("xyz restaurant","chennai",LocalTime.of(9,0),LocalTime.of(9,5));
+        populateMenuItems(restaurant);
+        List<String> names = new ArrayList<String>();
+        names.add("biryani");
+        names.add("curry");
+        names.add("sweet");
+
+        int orderTotal =  restaurant.getOrderTotal(names);
+        assertEquals(320, orderTotal);
+    }
+
+    private void populateMenuItems(Restaurant restaurant) {
+        restaurant.addToMenu("biryani",200);
+        restaurant.addToMenu("curry", 100);
+        restaurant.addToMenu("soup",50);
+        restaurant.addToMenu("sweet", 20);
+    }
+
 }
