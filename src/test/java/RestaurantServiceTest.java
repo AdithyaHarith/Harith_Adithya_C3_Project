@@ -9,23 +9,25 @@ class RestaurantServiceTest {
 
     RestaurantService service = new RestaurantService();
     Restaurant restaurant;
-    //REFACTOR ALL THE REPEATED LINES OF CODE
-
 
     //>>>>>>>>>>>>>>>>>>>>>>SEARCHING<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     @Test
     public void searching_for_existing_restaurant_should_return_expected_restaurant_object() throws restaurantNotFoundException {
-        //WRITE UNIT TEST CASE HERE
+        populateRestaurants();
+        Restaurant restaurant = service.findRestaurantByName("adyar restaurant");
+       assertNotNull(restaurant);
+       assertEquals("adyar restaurant",restaurant.getName());
     }
 
     //You may watch the video by Muthukumaran on how to write exceptions in Course 3: Testing and Version control: Optional content
     @Test
     public void searching_for_non_existing_restaurant_should_throw_exception() throws restaurantNotFoundException {
-        //WRITE UNIT TEST CASE HERE
+        populateRestaurants();
+        restaurantNotFoundException delhi_restaurant = assertThrows(restaurantNotFoundException.class,
+                () -> service.findRestaurantByName("delhi restaurant"));
+        assertEquals("delhi restaurant",delhi_restaurant.getMessage());
     }
     //<<<<<<<<<<<<<<<<<<<<SEARCHING>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-
 
 
     //>>>>>>>>>>>>>>>>>>>>>>ADMIN: ADDING & REMOVING RESTAURANTS<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -65,5 +67,11 @@ class RestaurantServiceTest {
         service.addRestaurant("Pumpkin Tales","Chennai",LocalTime.parse("12:00:00"),LocalTime.parse("23:00:00"));
         assertEquals(initialNumberOfRestaurants + 1,service.getRestaurants().size());
     }
+    // Repeated lines added as new method
+    private void populateRestaurants() {
+        service.addRestaurant("ABC restaurant", "chennai",LocalTime.of(9,0),LocalTime.of(20,0));
+        service.addRestaurant("adyar restaurant", "chennai",LocalTime.of(9,0),LocalTime.of(20,0));
+    }
+
     //<<<<<<<<<<<<<<<<<<<<ADMIN: ADDING & REMOVING RESTAURANTS>>>>>>>>>>>>>>>>>>>>>>>>>>
 }
